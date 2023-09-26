@@ -1,0 +1,79 @@
+<mvc:View
+    controllerName="com.proy.ejercicioflexiblecolumnintegrador.controller.List"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+>
+    <f:DynamicPage
+        id="dynamicPageId"
+        toggleHeaderOnTitleClick="false"
+    >
+        <f:title>
+            <f:DynamicPageTitle id="dynamicPageTitleId">
+                <f:heading>
+                    <Title
+                        text="{i18n>Products} {= '(' + ${orderMock>/length} + ')'}"
+                    />
+                </f:heading>
+                <f:content>
+                    <HBox>
+					<Button
+                icon="sap-icon://world"
+                press="onChangeLanguage"
+            />
+                        <SearchField
+                            search="onSearch"
+                            width="17.5rem"
+							placeholder="{i18n>Search}"
+                        />
+                        <OverflowToolbarButton icon="sap-icon://sort" type="Transparent" press="onSort"/>
+                    </HBox>
+                </f:content>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:content>
+            <Table
+                id="productsTable"
+                mode="SingleSelectMaster"
+                itemPress="onListItemPress"
+                inset="false"
+                items="{
+					path: 'orderMock>/'
+				}"
+                class="sapFDynamicPageAlignContent"
+                width="auto"
+            >
+                <columns>
+                    <Column width="12em">
+                        <Text text="{i18n>Products}" />
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="{i18n>Price}" />
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="{i18n>Quantity}" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation">
+                        <cells>
+                            <ObjectIdentifier
+                                title="{orderMock>ProductName}"
+                                text="{orderMock>ProductID}"
+                            />
+                            <ObjectNumber
+                                number="{orderMock>UnitPrice}"
+                                unit="{i18n>USD}"
+                            />
+                            <ObjectNumber
+                                number="{orderMock>Quantity}"
+                                state="{path: 'orderMock>Quantity', formatter: '.Formatter.quantityState'}"
+                            />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

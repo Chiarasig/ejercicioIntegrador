@@ -1,0 +1,80 @@
+<mvc:View
+    controllerName="com.proy.ejercicioflexiblecolumnintegrador.controller.Detail"
+   height="100%"
+    xmlns="sap.uxap"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:m="sap.m"
+    xmlns:f="sap.f"
+    xmlns:form="sap.ui.layout.form"
+>
+    <f:DynamicPage
+        id="dynamicPageId"
+        toggleHeaderOnTitleClick="false"
+    >
+    <f:content>
+        <ObjectPageLayout
+            id="ObjectPageLayout"
+            showTitleInHeaderContent="true"
+            alwaysShowContentHeader="false"
+            preserveHeaderStateOnScroll="false"
+            headerContentPinnable="true"
+            isChildPage="true"
+            upperCaseAnchorBar="false"
+        >
+<headerTitle>
+    <ObjectPageDynamicHeaderTitle>
+        <expandedHeading>
+            <m:Title
+                text="{selectedOrderMock>/ProductName}"
+                wrapping="true"
+                class="sapUiSmallMarginEnd"
+            />
+        </expandedHeading>
+        <actions>
+            <m:Button
+                icon="sap-icon://nav-back"
+                press="handleClose"
+                tooltip="{i18n>BackToList}"
+            />
+        </actions>
+    </ObjectPageDynamicHeaderTitle>
+</headerTitle>
+<sections>
+                <ObjectPageSection title="{i18n>GeneralInformation}">
+                    <subSections>
+                        <ObjectPageSubSection>
+                            <blocks>
+                                <form:SimpleForm
+                                    maxContainerCols="2"
+                                    editable="false"
+                                    layout="ResponsiveGridLayout"
+                                    labelSpanL="12"
+                                    labelSpanM="12"
+                                    emptySpanL="0"
+                                    emptySpanM="0"
+                                    columnsL="1"
+                                    columnsM="1"
+                                >
+                                    <form:content>
+                                        <m:Label text="{i18n>ProductName}" />
+            <m:Text text="{selectedOrderMock>/ProductName}" />
+
+            <m:Label text="{i18n>Quantity}" />
+            <m:Text text="{selectedOrderMock>/Quantity}" />
+
+            <m:Label text="{i18n>UnitPrice}" />
+            <m:Text text="{selectedOrderMock>/UnitPrice}" />
+
+            <m:Label text="{i18n>ExtendedPrice}" />
+            <m:Text text="{selectedOrderMock>/ExtendedPrice}" />
+                                    </form:content>
+                                </form:SimpleForm>
+                            </blocks>
+                        </ObjectPageSubSection>
+                    </subSections>
+                </ObjectPageSection>
+            </sections>
+        </ObjectPageLayout>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

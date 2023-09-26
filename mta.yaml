@@ -1,0 +1,92 @@
+_schema-version: "3.2"
+ID: ejercicioFlexibleColumnIntegrador
+version: 0.0.1
+modules:
+- name: ejercicioFlexibleColumnIntegrador-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: ejercicioFlexibleColumnIntegrador-destination-service
+    parameters:
+      content-target: true
+  - name: ejercicioFlexibleColumnIntegrador_html_repo_host
+    parameters:
+      service-key:
+        name: ejercicioFlexibleColumnIntegrador_html_repo_host-key
+  - name: uaa_ejercicioFlexibleColumnIntegrador
+    parameters:
+      service-key:
+        name: uaa_ejercicioFlexibleColumnIntegrador-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: ejercicioFlexibleColumnIntegrador_ejercicioFlexibleColumnIntegrador_html_repo_host
+          ServiceInstanceName: ejercicioFlexibleColumnIntegrador-html5-app-host-service
+          ServiceKeyName: ejercicioFlexibleColumnIntegrador_html_repo_host-key
+          sap.cloud.service: ejercicioFlexibleColumnIntegrador
+        - Authentication: OAuth2UserTokenExchange
+          Name: ejercicioFlexibleColumnIntegrador_uaa_ejercicioFlexibleColumnIntegrador
+          ServiceInstanceName: ejercicioFlexibleColumnIntegrador-xsuaa-service
+          ServiceKeyName: uaa_ejercicioFlexibleColumnIntegrador-key
+          sap.cloud.service: ejercicioFlexibleColumnIntegrador
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+- name: ejercicioFlexibleColumnIntegrador-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: ejercicioFlexibleColumnIntegrador_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - comproyejercicioflexiblecolumnintegrador.zip
+      name: comproyejercicioflexiblecolumnintegrador
+      target-path: resources/
+- name: comproyejercicioflexiblecolumnintegrador
+  type: html5
+  path: ejercicio_flexible_column_integrador
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: ejercicioFlexibleColumnIntegrador-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: ejercicioFlexibleColumnIntegrador-destination-service
+    service-plan: lite
+- name: ejercicioFlexibleColumnIntegrador_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: ejercicioFlexibleColumnIntegrador-html5-app-host-service
+    service-plan: app-host
+- name: uaa_ejercicioFlexibleColumnIntegrador
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: ejercicioFlexibleColumnIntegrador-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo
